@@ -41,7 +41,7 @@
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "gb";
+    layout = "us";
     xkbVariant = "";
   };
 
@@ -70,53 +70,28 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  programs.virt-manager.enable = true;
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.imza = {
     isNormalUser = true;
     description = "imza";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd"];
     packages = with pkgs; [
     #  thunderbird
     ];
   };
   
-  #programs.home-manager.enable = true;
-  home-manager.users.imza = { pkgs, ... }: {
-    home.stateVersion = "24.11";
-    
-    #programs.nvm = { enable = true; nodeVersion = "22";};
-  };
+  home-manager.users.imza = import (builtins.toPath "/home/imza/.config/home-manager/home.nix");
 
   # Install firefox.
   programs.firefox.enable = true;
 
-  users.extraUsers.imza = { shell = pkgs.zsh; };
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestions.enable = true;
-    syntaxHighlighting.enable = true;
-
-    shellAliases = {
-      ll = "ls -l";
-      edit = "sudo -e";
-      update = "sudo nixos-rebuild switch";
-    };
-
-    histSize = 10000;
-    histFile = "$HOME/.zsh_history";
-    setOptions = [
-      "HIST_IGNORE_ALL_DUPS"
-    ];
-
-    ohMyZsh = {
-      enable = true;
-      plugins = [
-        "git"
-      ];
-      theme = "robbyrussell";
-    };
-  };
+  # users.extraUsers.imza = { shell = pkgs.zsh; };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -125,9 +100,8 @@
     wget
     git
     neofetch
-    google-chrome
-    vscode
     gparted
+    gnomeExtensions.dash-to-dock
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
