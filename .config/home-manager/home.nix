@@ -25,42 +25,13 @@ in
     userEmail = "qnoy.social@gmail.com";
   };
 
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-
-    shellAliases = {
-      ll = "ls -l";
-      edit = "sudo -e";
-      update = "sudo nixos-rebuild switch";
-    };
-
-    history = {
-      size = 10000;
-      path = "${config.home.homeDirectory}/.zsh_history";
-    };
-
-    initExtra = ''
-      setopt HIST_IGNORE_ALL_DUPS
-    '';
-
-    oh-my-zsh = {
-      enable = true;
-      plugins = [ "git" ];
-      theme = "robbyrussell";
-    };
-  };
-
   home.packages = with pkgs; [
     vscode
     google-chrome
     scrcpy
 
     # other
-    # ytmdesktop
+    onlyoffice-desktopeditors
 
     # Javascript development
     nodejs_22
