@@ -87,13 +87,18 @@
       };
     };
   };
+
+  # Docker
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.imza = {
     isNormalUser = true;
     description = "imza";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd"];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" "docker"];
     packages = with pkgs; [
     #  thunderbird
     ];
