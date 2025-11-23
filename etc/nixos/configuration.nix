@@ -170,6 +170,7 @@
     neofetch
     gparted
     gnomeExtensions.dash-to-dock
+    git-lfs
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
