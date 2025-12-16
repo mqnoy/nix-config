@@ -17,6 +17,26 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernel.sysctl = { "vm.swappiness" = 10; };
 
+  specialisation = {
+    no-passthrough.configuration = { 
+      boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usbhid" "usb_storage" "sd_mod" "sdhci_pci" ];
+      boot.initrd.kernelModules = [ ];
+      boot.kernelModules = [ "kvm-intel" ];
+      boot.extraModulePackages = [ ];
+      boot.kernelParams = [ "intel_iommu=on" ];
+    };
+
+    passthrough.configuration = {
+      boot.kernelParams = [ "intel_iommu=on" "iommu=pt" "vfio-pci.ids=10de:1f91,10de:10fa" ];
+      boot.blacklistedKernelModules = [ "nvidia" "nvidia_drm" "nvidia_modeset" "nvidia_uvm" ];
+      boot.initrd.kernelModules = [ "vfio" "vfio_pci" "vfio_iommu_type1" ];
+      boot.kernelModules = [ "vfio" "vfio_pci" "vfio_iommu_type1" "kvm-intel" ];
+      boot.extraModprobeConfig = ''
+        options vfio-pci disable_idle_d3=1
+      '';
+    };
+  };
+
   networking.hostName = "x1extreme"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
