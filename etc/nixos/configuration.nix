@@ -207,6 +207,14 @@ cleanup = "sudo nix-collect-garbage -d && sudo nix-store --gc && sudo nix-store 
     alsa-plugins
     libpulseaudio
 
+    protontricks
+    vulkan-tools
+    mangohud
+    gamemode
+
+    wineWowPackages.stable
+    winetricks
+    wineWowPackages.waylandFull
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
