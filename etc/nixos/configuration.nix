@@ -108,7 +108,7 @@
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
     #media-session.enable = true;
-wireplumber.enable = true;
+    wireplumber.enable = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -164,7 +164,7 @@ wireplumber.enable = true;
       ll = "ls -l";
       edit = "sudo -e";
       update = "sudo nixos-rebuild switch";
-cleanup = "sudo nix-collect-garbage -d && sudo nix-store --gc && sudo nix-store --optimise && nix-env --delete-generations old";
+      cleanup = "sudo nix-collect-garbage -d && sudo nix-store --gc && sudo nix-store --optimise && nix-env --delete-generations old";
     };
 
     histSize = 10000;
