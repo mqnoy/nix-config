@@ -164,6 +164,7 @@ wireplumber.enable = true;
       ll = "ls -l";
       edit = "sudo -e";
       update = "sudo nixos-rebuild switch";
+cleanup = "sudo nix-collect-garbage -d && sudo nix-store --gc && sudo nix-store --optimise && nix-env --delete-generations old";
     };
 
     histSize = 10000;
