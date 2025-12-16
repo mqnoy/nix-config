@@ -218,11 +218,18 @@ cleanup = "sudo nix-collect-garbage -d && sudo nix-store --gc && sudo nix-store 
 
     ansible
 
+    cloudflare-warp
+  ];
 
   # Create a symlink from /usr/libexec/platform-python to the Python executable
   systemd.tmpfiles.rules = [
     "L+ /usr/libexec/platform-python - - - - ${pkgs.python3Minimal}/bin/python3"
   ];
+
+  systemd.user.services.warp-taskbar.wantedBy = [ "graphical.target" ];
+  services.cloudflare-warp = {
+    enable = true;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
