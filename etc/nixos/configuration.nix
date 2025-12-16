@@ -215,6 +215,15 @@ cleanup = "sudo nix-collect-garbage -d && sudo nix-store --gc && sudo nix-store 
     wineWowPackages.stable
     winetricks
     wineWowPackages.waylandFull
+
+    ansible
+
+
+  # Create a symlink from /usr/libexec/platform-python to the Python executable
+  systemd.tmpfiles.rules = [
+    "L+ /usr/libexec/platform-python - - - - ${pkgs.python3Minimal}/bin/python3"
+  ];
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
