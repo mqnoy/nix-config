@@ -44,6 +44,7 @@ in
 
     # other
     onlyoffice-desktopeditors
+    postman
 
     # Javascript development
     nodejs_22
@@ -52,5 +53,9 @@ in
     # Android development
     android-studio
     androidComposition.androidsdk
+    
+    filezilla
+    remmina
+    winbox4
   ];
 }
