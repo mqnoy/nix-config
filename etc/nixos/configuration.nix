@@ -15,8 +15,8 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  
   boot.kernel.sysctl = { "vm.swappiness" = 10; };
-
   specialisation = {
     no-passthrough.configuration = { 
       boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usbhid" "usb_storage" "sd_mod" "sdhci_pci" ];
@@ -60,6 +60,7 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
 
     prime = {
+      # sync.enable = true;
       offload.enable = true;
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
@@ -122,21 +123,15 @@
       package = pkgs.qemu_kvm;
       runAsRoot = true;
       swtpm.enable = true;
-      ovmf = {
-        enable = true;
-        packages = [(pkgs.OVMF.override {
-          secureBoot = true;
-          tpmSupport = true;
-        }).fd];
-      };
     };
   };
 
   # Docker
-  virtualisation.docker.rootless = {
+  virtualisation.docker = {
     enable = true;
-    setSocketVariable = true;
   };
+  virtualisation.docker.rootless.enable = false;
+  hardware.nvidia-container-toolkit.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.imza = {
@@ -179,8 +174,9 @@
         "git"
         "dirhistory"
         "history"
+        "ansible"
       ];
-      theme = "robbyrussell";
+      theme = "jonathan";
     };
   };
 
@@ -219,6 +215,10 @@
     ansible
 
     cloudflare-warp
+
+    nixfmt
+    kubectl
+    kubernetes
   ];
 
   # Create a symlink from /usr/libexec/platform-python to the Python executable
@@ -228,8 +228,17 @@
 
   systemd.user.services.warp-taskbar.wantedBy = [ "graphical.target" ];
   services.cloudflare-warp = {
-    enable = true;
+    enable = false;
   };
+
+  services.ollama = {
+    enable = false;
+    acceleration = "cuda";
+    environmentVariables = {
+      OLLAMA_HOST = "0.0.0.0";
+    };
+  };
+  systemd.services.ollama.wantedBy = [];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -256,7 +265,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "25.11"; # Did you read the comment?
   services.flatpak.enable = true;
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
